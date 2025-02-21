@@ -1,9 +1,13 @@
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-export function renderGallery(images) {
+export function renderGallery(images, isNewSearch = false) {
   const gallery = document.querySelector('#gallery');
-  gallery.innerHTML = '';
+
+  if (isNewSearch) {
+    gallery.innerHTML = '';
+  }
+
   const markup = images
     .map(
       ({
@@ -27,7 +31,7 @@ export function renderGallery(images) {
     )
     .join('');
 
-  gallery.innerHTML = markup;
+  gallery.insertAdjacentHTML('beforeend', markup);
 
   const lightbox = new SimpleLightbox('.gallery a', {
     captionsData: 'alt',
@@ -38,4 +42,11 @@ export function renderGallery(images) {
   });
 
   lightbox.refresh();
+}
+
+export function smoothScroll() {
+  const cardHeight =
+    document.querySelector('.gallery-item')?.getBoundingClientRect().height ||
+    100;
+  window.scrollBy({ top: cardHeight * 2, behavior: 'smooth' });
 }
